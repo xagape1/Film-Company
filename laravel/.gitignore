@@ -16,3 +16,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+mysql-client-key.pem
+composer
+composer.phar
+composer.lock
