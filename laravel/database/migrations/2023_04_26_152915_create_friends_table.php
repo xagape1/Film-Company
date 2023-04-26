@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('role', function (Blueprint $table) {
+        Schema::create('friend', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
+            $table->BigInteger('id_profile1')->unsigned();
+            $table->BigInteger('id_profile2')->unsigned();
+            $table->date('friendship_date')->nullable();
             $table->timestamps();
+            $table->foreign('id_profile1')->references('id')->on('profile');
+            $table->foreign('id_profile2')->references('id')->on('profile');
         });
     }
-    
 
     /**
      * Reverse the migrations.
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('role');
+        Schema::dropIfExists('friend');
     }
 };

@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('role', function (Blueprint $table) {
+        Schema::create('group', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_chat');
             $table->string('name');
-            $table->text('description')->nullable();
+            $table->integer('capacity');
             $table->timestamps();
+    
+            $table->foreign('id_chat')->references('id')->on('chat')->onDelete('cascade');
         });
     }
     
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('role');
+        Schema::dropIfExists('group');
     }
 };
