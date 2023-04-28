@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
 
             [
-                'username' => 'joel',
+                'name' => 'joel',
                 'last_name' => 'galán',
                 'email' => 'jogape@fp.insjoaquimmir.cat',
                 'email_verified_at' => Carbon::now(),
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'username' => 'holaquetal',
+                'name' => 'holaquetal',
                 'last_name' => 'adiosquetal',
                 'email' => 'holaquetal@gmail.com',
                 'email_verified_at' => Carbon::now(),
@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'username' => 'prova',
+                'name' => 'prova',
                 'last_name' => 'proveta',
                 'email' => 'provacio@gmail.com',
                 'email_verified_at' => Carbon::now(),
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
         ]);
 
         $admin = new User([
-            'username' => env('ADMIN_NAME'),
+            'name' => env('ADMIN_NAME'),
             'last_name' => 'Galán',
             'email' => env('ADMIN_EMAIL'),
             'email_verified_at' => Carbon::now(),
@@ -61,10 +61,9 @@ class UserSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
-        
+
         $admin->save();
-        
-        
 
     }
-};
+}
+;
