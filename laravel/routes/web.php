@@ -32,4 +32,3 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\MailController::class, 'index'])->name('home');
