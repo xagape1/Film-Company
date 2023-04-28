@@ -13,7 +13,8 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('user')->insert([
+        DB::table('users')->insert([
+
             [
                 'username' => 'joel',
                 'last_name' => 'galán',
@@ -35,16 +36,35 @@ class UserSeeder extends Seeder
                 'date_creation' => Carbon::now(),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
+            ],
+            [
+                'username' => 'prova',
+                'last_name' => 'proveta',
+                'email' => 'provacio@gmail.com',
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make('12345678'),
+                'date_of_birthday' => Carbon::parse('1995-05-05'),
+                'date_creation' => Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]
         ]);
 
         $admin = new User([
-            'name' => config('xavi'),
-            'email' => config('xagape@fp.insjoaquimmir.cat'),
-            'password' => Hash::make(config('12345678')),
+            'username' => env('ADMIN_NAME'),
+            'last_name' => 'Galán',
+            'email' => env('ADMIN_EMAIL'),
+            'email_verified_at' => Carbon::now(),
+            'password' => Hash::make(env('ADMIN_PASSWORD')),
+            'date_of_birthday' => Carbon::parse('2003-05-17'),
+            'date_creation' => Carbon::now(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         
         $admin->save();
         
+        
+
     }
-}
+};
