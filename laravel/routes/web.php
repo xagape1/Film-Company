@@ -20,3 +20,16 @@ Route::get('/', function () {
 });
 
 Route::get('mail/test', [MailController::class, 'test']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\MailController::class, 'index'])->name('home');

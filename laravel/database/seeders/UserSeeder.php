@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
 
             [
+                'id_role' => 2,
                 'name' => 'joel',
                 'last_name' => 'galán',
                 'email' => 'jogape@fp.insjoaquimmir.cat',
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id_role' => 2,
                 'name' => 'holaquetal',
                 'last_name' => 'adiosquetal',
                 'email' => 'holaquetal@gmail.com',
@@ -38,6 +40,7 @@ class UserSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
+                'id_role' => 2,
                 'name' => 'prova',
                 'last_name' => 'proveta',
                 'email' => 'provacio@gmail.com',
@@ -51,6 +54,7 @@ class UserSeeder extends Seeder
         ]);
 
         $admin = new User([
+            'id_role' => 1,
             'name' => env('ADMIN_NAME'),
             'last_name' => 'Galán',
             'email' => env('ADMIN_EMAIL'),
