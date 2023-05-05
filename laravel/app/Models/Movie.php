@@ -9,7 +9,7 @@ class Movie extends Model
 {
     use HasFactory;
 
-    protected $table = 'movie';
+    protected $table = 'movies';
 
     protected $fillable = [
         'title',
@@ -18,9 +18,4 @@ class Movie extends Model
         'duration',
         'video_path'
     ];
-
-    protected $casts = [
-        'duration' => 'time'
-    ];
-
 }

@@ -31,16 +31,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles.index');
-Route::get('/profiles/create', [ProfileController::class, 'create'])->name('profiles.create');
-Route::post('/profiles', [ProfileController::class, 'store'])->name('profiles.store');
-Route::resource('profiles', ProfileController::class);
 
-Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
-
-Route::resource('series', SerieController::class);
-Route::resource('movies', MovieController::class);
-Route::resource('series', SerieController::class);
-Route::resource('episodes', EpisodeController::class);
 
 // Route::resource('/profiles', [ProfileController::class, 'index'])->middleware(['auth', 'role:3'])->name('profiles.index');
