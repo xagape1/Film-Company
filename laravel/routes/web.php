@@ -37,3 +37,10 @@ Route::post('/profiles', [ProfileController::class, 'store'])->name('profiles.st
 Route::resource('profiles', ProfileController::class);
 
 Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
+
+Route::resource('series', SerieController::class);
+Route::resource('movies', MovieController::class);
+Route::resource('series', SerieController::class);
+Route::resource('episodes', EpisodeController::class);
+
+// Route::resource('/profiles', [ProfileController::class, 'index'])->middleware(['auth', 'role:3'])->name('profiles.index');

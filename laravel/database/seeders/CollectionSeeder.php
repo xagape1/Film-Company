@@ -18,7 +18,7 @@ class CollectionSeeder extends Seeder
         DB::table('collections')->insert([
             [
                 'id_profile' => 1,
-                'id_movie' => 1,
+                'id_movies' => 1,
                 'id_episode' => null,
                 'name' => 'My favorite movies',
                 'created_at' => now(),
@@ -26,7 +26,7 @@ class CollectionSeeder extends Seeder
             ],
             [
                 'id_profile' => 1,
-                'id_movie' => null,
+                'id_movies' => null,
                 'id_episode' => 1,
                 'name' => 'My favorite TV shows',
                 'created_at' => now(),
@@ -34,7 +34,7 @@ class CollectionSeeder extends Seeder
             ],
             [
                 'id_profile' => 2,
-                'id_movie' => 2,
+                'id_movies' => 2,
                 'id_episode' => null,
                 'name' => 'Action movies',
                 'created_at' => now(),
@@ -42,7 +42,7 @@ class CollectionSeeder extends Seeder
             ],
             [
                 'id_profile' => 2,
-                'id_movie' => 3,
+                'id_movies' => 3,
                 'id_episode' => null,
                 'name' => 'Romantic comedies',
                 'created_at' => now(),
@@ -50,7 +50,7 @@ class CollectionSeeder extends Seeder
             ],
             [
                 'id_profile' => 3,
-                'id_movie' => 4,
+                'id_movies' => 4,
                 'id_episode' => null,
                 'name' => 'Horror movies',
                 'created_at' => now(),

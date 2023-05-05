@@ -17,7 +17,7 @@ class ReviewSeeder extends Seeder
     {
         DB::table('review')->insert([
             [
-                'id_movie' => 1,
+                'id_movies' => 1,
                 'id_profile' => 1,
                 'review' => 'This movie was great!',
                 'created_at' => now(),
@@ -31,7 +31,7 @@ class ReviewSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_movie' => 2,
+                'id_movies' => 2,
                 'id_profile' => 3,
                 'review' => 'Disappointing movie. Would not recommend.',
                 'created_at' => now(),

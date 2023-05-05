@@ -15,7 +15,8 @@ class Movie extends Model
         'title',
         'description',
         'gender',
-        'duration'
+        'duration',
+        'video_path'
     ];
 
     protected $casts = [

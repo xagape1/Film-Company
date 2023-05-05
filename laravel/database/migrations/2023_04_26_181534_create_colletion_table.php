@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_profile');
-            $table->unsignedBigInteger('id_movie')->nullable();
+            $table->unsignedBigInteger('id_movies')->nullable();
             $table->unsignedBigInteger('id_episode')->nullable();
             $table->string('name');
             $table->timestamps();
 
             $table->foreign('id_profile')->references('id')->on('profile')->onDelete('cascade');
-            $table->foreign('id_movie')->references('id')->on('movie')->onDelete('cascade');
+            $table->foreign('id_movies')->references('id')->on('movies')->onDelete('cascade');
             $table->foreign('id_episode')->references('id')->on('episode')->onDelete('cascade');
         });
     }

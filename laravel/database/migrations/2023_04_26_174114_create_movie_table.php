@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('movie', function (Blueprint $table) {
+        Schema::create('movies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('description');
             $table->string('gender');
             $table->time('duration');
+            $table->string('video_path')->nullable();
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.

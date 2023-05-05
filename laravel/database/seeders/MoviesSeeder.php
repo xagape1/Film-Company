@@ -15,7 +15,7 @@ class MoviesSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('movie')->insert([
+        DB::table('movies')->insert([
             [
                 'title' => 'The Shawshank Redemption',
                 'description' => 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
