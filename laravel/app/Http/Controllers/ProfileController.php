@@ -1,38 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Profile;
+
 class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $profiles = auth()->user()->profiles;
 
-        return view('profiles.index', compact('profiles'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\View\Factory
-     */
-    public function create()
-    {
-        return view('profiles.create');
+        return response()->json(['profiles' => $profiles]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -48,29 +40,18 @@ class ProfileController extends Controller
 
         $profile->save();
 
-        return redirect()->route('profiles.index')->with('success', 'Profile created successfully.');
+        return response()->json(['message' => 'Profile created successfully.', 'profile' => $profile]);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Contracts\View\Factory
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Profile $profile)
     {
-        return view('profiles.show', compact('profile'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Contracts\View\Factory
-     */
-    public function edit(Profile $profile)
-    {
-        return view('profiles.edit', compact('profile'));
+        return response()->json(['profile' => $profile]);
     }
 
     /**
@@ -78,7 +59,7 @@ class ProfileController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Profile $profile)
     {
@@ -90,19 +71,19 @@ class ProfileController extends Controller
 
         $profile->save();
 
-        return redirect()->route('profiles.index')->with('success', 'Profile updated successfully.');
+        return response()->json(['message' => 'Profile updated successfully.', 'profile' => $profile]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Profile $profile)
     {
         $profile->delete();
 
-        return redirect()->route('profiles.index')->with('success', 'Profile deleted successfully.');
+        return response()->json(['message' => 'Profile deleted successfully.']);
     }
 }

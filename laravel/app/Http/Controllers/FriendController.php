@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Friend;
 
-class FriendController extends Controller
+class FriendApiController extends Controller
 {
     public function index()
     {
         $friends = Friend::all();
-        return view('friends.index', compact('friends'));
+        return response()->json($friends);
     }
 
-    public function create()
+    public function show($id)
     {
-        return view('friends.create');
+        $friend = Friend::find($id);
+        if (!$friend) {
+            return response()->json(['message' => 'Friend not found'], 404);
+        }
+        return response()->json($friend);
     }
 
     public function store(Request $request)
@@ -34,14 +38,39 @@ class FriendController extends Controller
 
         $friend->save();
 
-        return redirect('/friends')->with('success', 'Friend added!');
+        return response()->json($friend, 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $friend = Friend::find($id);
+        if (!$friend) {
+            return response()->json(['message' => 'Friend not found'], 404);
+        }
+
+        $request->validate([
+            'id_profile1' => 'required|exists:profile,id',
+            'id_profile2' => 'required|exists:profile,id',
+            'friendship_date' => 'nullable|date'
+        ]);
+
+        $friend->id_profile1 = $request->get('id_profile1');
+        $friend->id_profile2 = $request->get('id_profile2');
+        $friend->friendship_date = $request->get('friendship_date');
+
+        $friend->save();
+
+        return response()->json($friend);
     }
 
     public function destroy($id)
     {
         $friend = Friend::find($id);
+        if (!$friend) {
+            return response()->json(['message' => 'Friend not found'], 404);
+        }
         $friend->delete();
 
-        return redirect('/friends')->with('success', 'Friend deleted!');
+        return response()->json(['message' => 'Friend deleted']);
     }
 }

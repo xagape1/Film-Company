@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Review;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class ReviewController extends Controller
         $review->review = $request->input('review');
         $review->save();
         
-        return redirect()->route('review.index');
+        return response()->json(['message' => 'Review created successfully.']);
     }
     
     public function store(Request $request)
@@ -33,7 +34,7 @@ class ReviewController extends Controller
         $review->review = $request->input('review');
         $review->save();
         
-        return redirect()->route('review.index');
+        return response()->json(['message' => 'Review created successfully.']);
     }
     
     public function destroy($id)
@@ -41,12 +42,12 @@ class ReviewController extends Controller
         $review = Review::findOrFail($id);
         $review->delete();
         
-        return redirect()->route('review.index');
+        return response()->json(['message' => 'Review deleted successfully.']);
     }
     
     public function index(Request $request)
     {
         $reviews = Review::with('movie', 'episode', 'profile')->get();
-        return view('reviews.index', ['reviews' => $reviews]);
+        return response()->json(['reviews' => $reviews]);
     }
 }

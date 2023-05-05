@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Episode;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,12 +12,7 @@ class EpisodeController extends Controller
     public function index()
     {
         $episodes = Episode::all();
-        return view('episodes.index', compact('episodes'));
-    }
-
-    public function create()
-    {
-        return view('episodes.create');
+        return response()->json(['episodes' => $episodes], 200);
     }
 
     public function store(Request $request)
@@ -41,19 +37,16 @@ class EpisodeController extends Controller
 
         $episode->save();
 
-        return redirect()->route('episodes.index')->with('success', 'Episode created successfully.');
+        return response()->json(['episode' => $episode], 201);
     }
 
     public function show($id)
     {
         $episode = Episode::find($id);
-        return view('episodes.show', compact('episode'));
-    }
-
-    public function edit($id)
-    {
-        $episode = Episode::find($id);
-        return view('episodes.edit', compact('episode'));
+        if (!$episode) {
+            return response()->json(['message' => 'Episode not found'], 404);
+        }
+        return response()->json(['episode' => $episode], 200);
     }
 
     public function update(Request $request, $id)
@@ -67,6 +60,10 @@ class EpisodeController extends Controller
         ]);
 
         $episode = Episode::find($id);
+        if (!$episode) {
+            return response()->json(['message' => 'Episode not found'], 404);
+        }
+
         $episode->serie_id = $request->serie_id;
         $episode->title = $request->title;
         $episode->description = $request->description;
@@ -83,17 +80,20 @@ class EpisodeController extends Controller
 
         $episode->save();
 
-        return redirect()->route('episodes.index')->with('success', 'Episode updated successfully.');
+        return response()->json(['episode' => $episode], 200);
     }
 
     public function destroy($id)
     {
         $episode = Episode::find($id);
+        if (!$episode) {
+            return response()->json(['message' => 'Episode not found'], 404);
+        }
         if ($episode->video_path) {
             Storage::delete($episode->video_path);
         }
         $episode->delete();
 
-        return redirect()->route('episodes.index')->with('success', 'Episode deleted successfully.');
+        return response()->json(['message' => 'Episode deleted successfully'], 200);
     }
 }

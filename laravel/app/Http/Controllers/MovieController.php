@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use Illuminate\Support\Facades\Storage;
@@ -11,12 +12,7 @@ class MovieController extends Controller
     public function index()
     {
         $movies = Movie::all();
-        return view('movies.index', compact('movies'));
-    }
-
-    public function create()
-    {
-        return view('movies.create');
+        return response()->json($movies);
     }
 
     public function store(Request $request)
@@ -36,24 +32,24 @@ class MovieController extends Controller
         
         $movie->save();
 
-        return redirect()->route('movies.index');
+        return response()->json(['message' => 'Movie created successfully', 'movie' => $movie], 201);
     }
 
     public function show($id)
     {
         $movie = Movie::find($id);
-        return view('movies.show', compact('movie'));
-    }
-
-    public function edit($id)
-    {
-        $movie = Movie::find($id);
-        return view('movies.edit', compact('movie'));
+        if (!$movie) {
+            return response()->json(['message' => 'Movie not found'], 404);
+        }
+        return response()->json($movie);
     }
 
     public function update(Request $request, $id)
     {
         $movie = Movie::find($id);
+        if (!$movie) {
+            return response()->json(['message' => 'Movie not found'], 404);
+        }
         $movie->title = $request->title;
         $movie->description = $request->description;
         $movie->gender = $request->gender;
@@ -68,12 +64,15 @@ class MovieController extends Controller
         
         $movie->save();
 
-        return redirect()->route('movies.index');
+        return response()->json(['message' => 'Movie updated successfully', 'movie' => $movie]);
     }
 
     public function destroy($id)
     {
         $movie = Movie::find($id);
+        if (!$movie) {
+            return response()->json(['message' => 'Movie not found'], 404);
+        }
         
         // Eliminar el archivo de video si existe
         if ($movie->video_path) {
@@ -82,6 +81,6 @@ class MovieController extends Controller
         
         $movie->delete();
 
-        return redirect()->route('movies.index');
+        return response()->json(['message' => 'Movie deleted successfully']);
     }
 }

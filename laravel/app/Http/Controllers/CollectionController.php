@@ -5,18 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Collection;
 use Illuminate\Http\Request;
 
-class CollectionController extends Controller
+class CollectionApiController extends Controller
 {
     public function index()
     {
         $collections = Collection::all();
 
-        return view('collections.index', compact('collections'));
-    }
-
-    public function create()
-    {
-        return view('collections.create');
+        return response()->json([
+            'data' => $collections
+        ]);
     }
 
     public function store(Request $request)
@@ -39,17 +36,17 @@ class CollectionController extends Controller
             $collection->episodes()->attach($request->input('episodes'));
         }
 
-        return redirect()->route('collections.index')->with('success', 'Collection created successfully.');
+        return response()->json([
+            'message' => 'Collection created successfully.',
+            'data' => $collection
+        ], 201);
     }
 
     public function show(Collection $collection)
     {
-        return view('collections.show', compact('collection'));
-    }
-
-    public function edit(Collection $collection)
-    {
-        return view('collections.edit', compact('collection'));
+        return response()->json([
+            'data' => $collection
+        ]);
     }
 
     public function update(Request $request, Collection $collection)
@@ -73,7 +70,10 @@ class CollectionController extends Controller
             $collection->episodes()->attach($request->input('episodes'));
         }
 
-        return redirect()->route('collections.index')->with('success', 'Collection updated successfully.');
+        return response()->json([
+            'message' => 'Collection updated successfully.',
+            'data' => $collection
+        ]);
     }
 
     public function destroy(Collection $collection)
@@ -82,6 +82,8 @@ class CollectionController extends Controller
         $collection->episodes()->detach();
         $collection->delete();
 
-        return redirect()->route('collections.index')->with('success', 'Collection deleted successfully.');
+        return response()->json([
+            'message' => 'Collection deleted successfully.'
+        ]);
     }
 }

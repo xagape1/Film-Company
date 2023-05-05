@@ -1,38 +1,39 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Http\Controllers\Controller;
 
 class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $groups = Group::all();
-        return view('groups.index', compact('groups'));
+        return response()->json($groups);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\Factory
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create()
     {
-        return view('groups.create');
+        return response()->json(['message' => 'Create method not supported'], 405);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -50,31 +51,30 @@ class GroupController extends Controller
 
         $group->save();
 
-        return redirect()->route('groups.index')->with('success', 'Group created successfully.');
+        return response()->json($group, 201);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\Factory
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         $group = Group::findOrFail($id);
-        return view('groups.show', compact('group'));
+        return response()->json($group);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\View\Factory
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit($id)
     {
-        $group = Group::findOrFail($id);
-        return view('groups.edit', compact('group'));
+        return response()->json(['message' => 'Edit method not supported'], 405);
     }
 
     /**
@@ -82,7 +82,7 @@ class GroupController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -100,19 +100,19 @@ class GroupController extends Controller
 
         $group->save();
 
-        return redirect()->route('groups.index')->with('success', 'Group updated successfully.');
+        return response()->json($group);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
         $group = Group::findOrFail($id);
         $group->delete();
-        return redirect()->route('groups.index')->with('success', 'Group deleted successfully.');
+        return response()->json(['message' => 'Group deleted successfully.']);
     }
 }

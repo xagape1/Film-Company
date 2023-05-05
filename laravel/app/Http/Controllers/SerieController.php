@@ -10,12 +10,12 @@ class SerieController extends Controller
     public function index()
     {
         $series = Serie::all();
-        return view('series.index', compact('series'));
+        return response()->json($series);
     }
 
     public function create()
     {
-        return view('series.create');
+        return response()->json(['message' => 'No disponible'], 404);
     }
 
     public function store(Request $request)
@@ -38,13 +38,23 @@ class SerieController extends Controller
 
         $serie->save();
 
-        return redirect('/series')->with('success', 'Serie creada exitosamente!');
+        return response()->json($serie, 201);
+    }
+
+    public function show($id)
+    {
+        $serie = Serie::find($id);
+
+        if (!$serie) {
+            return response()->json(['message' => 'Serie no encontrada'], 404);
+        }
+
+        return response()->json($serie);
     }
 
     public function edit($id)
     {
-        $serie = Serie::find($id);
-        return view('series.edit', compact('serie'));
+        return response()->json(['message' => 'No disponible'], 404);
     }
 
     public function update(Request $request, $id)
@@ -58,6 +68,11 @@ class SerieController extends Controller
         ]);
 
         $serie = Serie::find($id);
+
+        if (!$serie) {
+            return response()->json(['message' => 'Serie no encontrada'], 404);
+        }
+
         $serie->title = $request->get('title');
         $serie->description = $request->get('description');
         $serie->gender = $request->get('gender');
@@ -65,14 +80,19 @@ class SerieController extends Controller
         $serie->episodes = $request->get('episodes');
         $serie->save();
 
-        return redirect('/series')->with('success', 'Serie actualizada exitosamente!');
+        return response()->json($serie);
     }
 
     public function destroy($id)
     {
         $serie = Serie::find($id);
+
+        if (!$serie) {
+            return response()->json(['message' => 'Serie no encontrada'], 404);
+        }
+
         $serie->delete();
 
-        return redirect('/series')->with('success', 'Serie eliminada exitosamente!');
+        return response()->json(['message' => 'Serie eliminada exitosamente']);
     }
 }

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $users = User::all();
-        return view('users.index', compact('users'));
+        return response()->json($users);
     }
 
     public function create()
@@ -18,7 +19,7 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
             'id_role' => 'required|integer',
@@ -28,13 +29,13 @@ class UserController extends Controller
         ]);
 
         $user = User::create($validatedData);
-        return redirect()->route('users.show', $user->id);
+        return response()->json($user, 201);
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
         $user = User::findOrFail($id);
-        return view('users.show', compact('user'));
+        return response()->json($user);
     }
 
     public function edit($id)
@@ -43,7 +44,7 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
         $validatedData = $request->validate([
             'id_role' => 'required|integer',
@@ -54,13 +55,13 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $user->update($validatedData);
-        return redirect()->route('users.show', $user->id);
+        return response()->json($user);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('users.index');
+        return response()->json(null, 204);
     }
 }
