@@ -9,6 +9,8 @@ class Profile extends Model
 {
     use HasFactory;
 
+    protected $table = 'profiles';
+
     protected $fillable = [
         'id_users',
         'name',
