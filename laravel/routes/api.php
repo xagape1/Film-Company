@@ -58,11 +58,11 @@ Route::post('/reviews/store', [ReviewController::class, 'store']);
 Route::delete('/reviews/{id}', [ReviewController::class, 'destroy']);
 Route::get('/reviews', [ReviewController::class, 'index']);
 
-Route::get('/profiles', [ProfileController::class, 'index'])->name('profiles.index');
-Route::post('/profiles', [ProfileController::class, 'store'])->name('profiles.store');
-Route::get('/profiles/{profile}', [ProfileController::class, 'show'])->name('profiles.show');
-Route::put('/profiles/{profile}', [ProfileController::class, 'update'])->name('profiles.update');
-Route::delete('/profiles/{profile}', [ProfileController::class, 'destroy'])->name('profiles.destroy');
+Route::get('/profile', [ProfileController::class, 'index'])->name('profiles.index');
+Route::post('/profile', [ProfileController::class, 'store'])->name('profiles.store');
+Route::get('/profile/{profile}', [ProfileController::class, 'show'])->name('profiles.show');
+Route::put('/profile/{profile}', [ProfileController::class, 'update'])->name('profiles.update');
+Route::delete('/profile/{profile}', [ProfileController::class, 'destroy'])->name('profiles.destroy');
 
 Route::get('/movies', [MovieController::class, 'index']);
 Route::post('/movies', [MovieController::class, 'store']);

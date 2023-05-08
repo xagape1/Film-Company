@@ -14,11 +14,10 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $profiles = auth()->user()->profiles;
-
-        return response()->json(['profiles' => $profiles]);
+        $profile = Profile::all();
+    
+        return response()->json($profile);
     }
-
     /**
      * Store a newly created resource in storage.
      *
