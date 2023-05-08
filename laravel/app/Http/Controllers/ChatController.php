@@ -19,9 +19,14 @@ class ChatController extends Controller
     {
         $user = Auth::user();
         $chats = $user->chats;
-
+    
+        if (!$chats) {
+            return response()->json(['chats' => []]);
+        }
+    
         return response()->json(['chats' => $chats]);
     }
+    
 
     /**
      * Show the form for creating a new resource.
