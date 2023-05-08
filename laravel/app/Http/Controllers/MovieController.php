@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class MovieController extends Controller
 {
@@ -13,7 +14,34 @@ class MovieController extends Controller
         $movies = Movie::all();
         return response()->json($movies);
     }
-
+    public function create(Request $request)
+    {
+        // Validar los datos de entrada
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required',
+            'gender' => 'required',
+            'duration' => 'required|numeric'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+    
+        // Crear la nueva película
+        $movie = new Movie;
+        $movie->title = $request->input('title');
+        $movie->description = $request->input('description');
+        $movie->gender = $request->input('gender');
+        $movie->duration = $request->input('duration');
+    
+        // Guardar la nueva película en la base de datos
+        $movie->save();
+    
+        // Devolver una respuesta en formato JSON
+        return response()->json(['message' => 'Movie created successfully', 'movie' => $movie], 201);
+    }
+    
     public function store(Request $request)
     {
         $movie = new Movie;
