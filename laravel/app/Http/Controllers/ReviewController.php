@@ -11,42 +11,48 @@ class ReviewController extends Controller
     {
         $review = new Review();
         $review->id_profile = $request->input('id_profile');
-        $review->id_movie = $request->input('id_movie');
+        $review->id_movies = $request->input('id_movies');
         $review->id_episode = $request->input('id_episode');
         $review->review = $request->input('review');
         $review->save();
-        
+
         return response()->json(['message' => 'Review created successfully.']);
     }
-    
+
     public function store(Request $request)
     {
         $this->validate($request, [
             'id_profile' => 'required',
             'review' => 'required',
         ]);
-        
+
         $review = new Review();
         $review->id_profile = $request->input('id_profile');
-        $review->id_movie = $request->input('id_movie');
+        $review->id_movies = $request->input('id_movies');
         $review->id_episode = $request->input('id_episode');
         $review->review = $request->input('review');
         $review->save();
-        
+
         return response()->json(['message' => 'Review created successfully.']);
     }
-    
+
     public function destroy($id)
     {
         $review = Review::findOrFail($id);
         $review->delete();
-        
+
         return response()->json(['message' => 'Review deleted successfully.']);
     }
-    
+    public function show($id)
+    {
+        $review = Review::with('movie', 'episode', 'profile')->findOrFail($id);
+        return response()->json(['review' => $review]);
+    }
+
     public function index(Request $request)
     {
         $reviews = Review::with('movie', 'episode', 'profile')->get();
         return response()->json(['reviews' => $reviews]);
     }
+
 }

@@ -10,8 +10,8 @@ class EpisodeController extends Controller
 {
     public function index()
     {
-        $episodes = Episode::all();
-        return response()->json(['episodes' => $episodes], 200);
+        $episode = Episode::all();
+        return response()->json(['episode' => $episode], 200);
     }
 
     public function store(Request $request)

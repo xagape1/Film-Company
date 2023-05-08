@@ -14,6 +14,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FriendController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,10 +54,11 @@ Route::post('roles', [RoleController::class, 'store']);
 Route::put('roles/{id}', [RoleController::class, 'update']);
 Route::delete('roles/{id}', [RoleController::class, 'destroy']);
 
-Route::post('/reviews', [ReviewController::class, 'create']);
-Route::post('/reviews/store', [ReviewController::class, 'store']);
-Route::delete('/reviews/{id}', [ReviewController::class, 'destroy']);
-Route::get('/reviews', [ReviewController::class, 'index']);
+Route::post('/review', [ReviewController::class, 'create']);
+Route::get('review/{id}', [ReviewController::class, 'show']);
+Route::post('/review/store', [ReviewController::class, 'store']);
+Route::delete('/review/{id}', [ReviewController::class, 'destroy']);
+Route::get('/review', [ReviewController::class, 'index']);
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');

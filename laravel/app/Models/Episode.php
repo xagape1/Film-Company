@@ -9,6 +9,7 @@ class Episode extends Model
 {
     use HasFactory;
 
+    protected $table = 'episode';
     protected $fillable = [
         'title',
         'description',

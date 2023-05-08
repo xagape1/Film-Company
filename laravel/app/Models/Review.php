@@ -12,20 +12,26 @@ class Review extends Model
     protected $table = 'review';
 
     protected $fillable = [
-        'id_movie',
+        'id_movies',
         'id_serie',
+        'id_episode',
         'id_profile',
         'review'
     ];
 
     public function movie()
     {
-        return $this->belongsTo(Movie::class, 'id_movie');
+        return $this->belongsTo(Movie::class, 'id_movies');
     }
 
     public function serie()
     {
         return $this->belongsTo(Serie::class, 'id_serie');
+    }
+
+    public function episode()
+    {
+        return $this->belongsTo(Episode::class, 'id_episode');
     }
 
     public function profile()
