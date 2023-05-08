@@ -33,7 +33,7 @@ class ProfileController extends Controller
 
     public function store(Request $request)
     {
-        $user = auth()->user(); // Obtener el usuario autenticado
+        $user = auth()->user(); 
     
         $validatedData = $request->validate([
             'name' => 'required',
@@ -41,7 +41,7 @@ class ProfileController extends Controller
     
         $profile = new Profile;
         $profile->name = $validatedData['name'];
-        $profile->id_users = $user->id; // Asignar el ID del usuario al perfil
+        $profile->id_users = $user->id; 
         $profile->save();
     
         return response()->json(['message' => 'Profile created successfully.', 'profile' => $profile]);

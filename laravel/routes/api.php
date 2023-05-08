@@ -15,6 +15,7 @@ use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Api\TokenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,11 @@ use App\Http\Controllers\ReviewController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+    
+Route::post('/register', [TokenController::class, 'register']);
+Route::post('/login', [TokenController::class, 'login']);
+Route::post('/logout', [TokenController::class, 'logout'])->middleware(['auth:sanctum']);
+Route::get('/user', [TokenController::class, 'user'])->middleware(['auth:sanctum']);
 
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
