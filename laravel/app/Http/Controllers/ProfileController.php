@@ -15,31 +15,40 @@ class ProfileController extends Controller
     public function index()
     {
         $profile = Profile::all();
-    
+
         return response()->json($profile);
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(Request $request)
+    public function create(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
-
-        $profile = new Profile([
-            'name' => $request->get('name'),
-        ]);
-
-        $profile->user()->associate(auth()->user());
-
+        $user = auth()->user(); // Obtenemos el usuario autenticado
+    
+        $profile = new Profile;
+        $profile->name = $request->input('name');
+        $profile->id_users = $user->id; // Asignamos el ID del usuario al perfil
         $profile->save();
-
+    
         return response()->json(['message' => 'Profile created successfully.', 'profile' => $profile]);
     }
+    
+
+    public function store(Request $request)
+    {
+        $user = auth()->user(); // Obtener el usuario autenticado
+    
+        $validatedData = $request->validate([
+            'name' => 'required',
+        ]);
+    
+        $profile = new Profile;
+        $profile->name = $validatedData['name'];
+        $profile->id_users = $user->id; // Asignar el ID del usuario al perfil
+        $profile->save();
+    
+        return response()->json(['message' => 'Profile created successfully.', 'profile' => $profile]);
+    }
+    
+
+
 
     /**
      * Display the specified resource.
