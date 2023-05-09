@@ -11,17 +11,21 @@ class EpisodeController extends Controller
     public function index()
     {
         $episodes = Episode::all();
-        return response()->json(['episodes' => $episodes], 200);
+        $episodes = $episodes->map(function ($episode) {
+            $episode['video_path'] = asset(Storage::url($episode['video_path']));
+            return $episode;
+        });
+        return response()->json($episodes);
     }
-
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'title' => 'required',
             'description' => 'required',
             'season' => 'required',
             'duration' => 'required',
-            'video' => 'required|mimetypes:video/avi,video/mpeg,video/mp4'
+            'video' => 'required|mimetypes:video/avi,video/mpeg,video/mp4',
+            'serie_id' => 'required|exists:series,id'
         ]);
 
         $episode = new Episode();
@@ -39,6 +43,35 @@ class EpisodeController extends Controller
         return response()->json(['episode' => $episode], 201);
     }
 
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'season' => 'required',
+            'duration' => 'required',
+            'video' => 'required|mimetypes:video/avi,video/mpeg,video/mp4',
+            'serie_id' => 'required|exists:series,id'
+        ]);
+
+        $episode = new Episode();
+        $episode->serie_id = $request->serie_id;
+        $episode->title = $request->title;
+        $episode->description = $request->description;
+        $episode->season = $request->season;
+        $episode->duration = $request->duration;
+
+        if ($request->hasFile('video')) {
+            $video = $request->file('video');
+            $path = $video->store('public/videos');
+            $episode->video_path = $path;
+        }
+
+        $episode->save();
+        return response()->json(['episode' => $episode], 201);
+    }
+
     public function show($id)
     {
         $episode = Episode::find($id);
@@ -50,14 +83,6 @@ class EpisodeController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'season' => 'required',
-            'duration' => 'required',
-            'video' => 'nullable|mimetypes:video/avi,video/mpeg,video/mp4'
-        ]);
-
         $episode = Episode::find($id);
         if (!$episode) {
             return response()->json(['message' => 'Episode not found'], 404);
@@ -95,5 +120,4 @@ class EpisodeController extends Controller
 
         return response()->json(['message' => 'Episode deleted successfully'], 200);
     }
-
 }
