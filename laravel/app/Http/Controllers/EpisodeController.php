@@ -10,8 +10,8 @@ class EpisodeController extends Controller
 {
     public function index()
     {
-        $episode = Episode::all();
-        return response()->json(['episode' => $episode], 200);
+        $episodes = Episode::all();
+        return response()->json(['episodes' => $episodes], 200);
     }
 
     public function store(Request $request)
@@ -95,4 +95,5 @@ class EpisodeController extends Controller
 
         return response()->json(['message' => 'Episode deleted successfully'], 200);
     }
+
 }

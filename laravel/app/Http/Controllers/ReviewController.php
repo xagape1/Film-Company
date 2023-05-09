@@ -12,7 +12,6 @@ class ReviewController extends Controller
         $review = new Review();
         $review->id_profile = $request->input('id_profile');
         $review->id_movies = $request->input('id_movies');
-        $review->id_episodes = $request->input('id_episodes');
         $review->review = $request->input('review');
         $review->save();
 
@@ -29,7 +28,6 @@ class ReviewController extends Controller
         $review = new Review();
         $review->id_profile = $request->input('id_profile');
         $review->id_movies = $request->input('id_movies');
-        $review->id_episodes = $request->input('id_episodes');
         $review->review = $request->input('review');
         $review->save();
 
@@ -45,13 +43,13 @@ class ReviewController extends Controller
     }
     public function show($id)
     {
-        $review = Review::with('movie', 'episode', 'profile')->findOrFail($id);
+        $review = Review::with('movie', 'profile')->findOrFail($id);
         return response()->json(['review' => $review]);
     }
 
     public function index(Request $request)
     {
-        $reviews = Review::with('movie', 'episode', 'profile')->get();
+        $reviews = Review::with('movie','profile')->get();
         return response()->json(['reviews' => $reviews]);
     }
 

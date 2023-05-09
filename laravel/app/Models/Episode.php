@@ -9,14 +9,14 @@ class Episode extends Model
 {
     use HasFactory;
 
-    protected $table = 'episode';
+    protected $table = 'episodes';
     protected $fillable = [
         'title',
         'description',
         'season',
         'duration',
-        'video_path',
         'serie_id',
+        'video_path',
     ];
 
     public function serie()

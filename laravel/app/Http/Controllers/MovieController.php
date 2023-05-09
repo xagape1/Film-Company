@@ -13,35 +13,47 @@ class MovieController extends Controller
     public function index()
     {
         $movies = Movie::all();
+        $movies = $movies->map(function ($movie) {
+            $movie['video_path'] = asset(Storage::url($movie['video_path']));
+            return $movie;
+        });
         return response()->json($movies);
-    }
+    }    
+    
     public function create(Request $request)
-    {
-        // Validar los datos de entrada
-        $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'description' => 'required',
-            'gender' => 'required',
-            'duration' => 'required|numeric'
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-    
-        // Crear la nueva película
-        $movie = new Movie;
-        $movie->title = $request->input('title');
-        $movie->description = $request->input('description');
-        $movie->gender = $request->input('gender');
-        $movie->duration = $request->input('duration');
-    
-        // Guardar la nueva película en la base de datos
-        $movie->save();
-    
-        // Devolver una respuesta en formato JSON
-        return response()->json(['message' => 'Movie created successfully', 'movie' => $movie], 201);
+{
+    // Validar los datos de entrada
+    $validator = Validator::make($request->all(), [
+        'title' => 'required',
+        'description' => 'required',
+        'gender' => 'required',
+        'duration' => 'required|numeric',
+        'video' => 'required|mimes:mp4|max:10240' // requerir un archivo de video mp4 de máximo 10 MB
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 400);
     }
+
+    // Crear la nueva película
+    $movie = new Movie;
+    $movie->title = $request->input('title');
+    $movie->description = $request->input('description');
+    $movie->gender = $request->input('gender');
+    $movie->duration = $request->input('duration');
+
+    // Guardar la nueva película en la base de datos
+    $movie->save();
+
+    // Guardar el archivo de video en el almacenamiento
+    $video = $request->file('video');
+    $path = $video->store('public/videos');
+    $movie->video_path = $path;
+
+    // Devolver una respuesta en formato JSON
+    return response()->json(['message' => 'Movie created successfully', 'movie' => $movie], 201);
+}
+
     
     public function store(Request $request)
     {

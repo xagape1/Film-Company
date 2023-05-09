@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('season');
             $table->time('duration');
+            $table->string('video_path')->nullable();
             $table->timestamps();
 
             $table->foreign('serie_id')->references('id')->on('serie');
