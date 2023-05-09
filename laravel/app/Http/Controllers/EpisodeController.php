@@ -25,7 +25,7 @@ class EpisodeController extends Controller
             'season' => 'required',
             'duration' => 'required',
             'video' => 'required|mimetypes:video/avi,video/mpeg,video/mp4',
-            'serie_id' => 'required|exists:series,id'
+            'serie_id' => 'required|exists:serie,id'
         ]);
 
         $episode = new Episode();
@@ -52,7 +52,7 @@ class EpisodeController extends Controller
             'season' => 'required',
             'duration' => 'required',
             'video' => 'required|mimetypes:video/avi,video/mpeg,video/mp4',
-            'serie_id' => 'required|exists:series,id'
+            'serie_id' => 'required|exists:serie,id'
         ]);
 
         $episode = new Episode();

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('serie_id');
             $table->string('title');
             $table->text('description');
-            $table->string('gender');
+            $table->integer('season');
             $table->time('duration');
             $table->string('video_path')->nullable();
             $table->timestamps();
