@@ -19,7 +19,7 @@ class CollectionSeeder extends Seeder
             [
                 'id_profile' => 1,
                 'id_movies' => 1,
-                'id_episode' => null,
+                'id_episodes' => null,
                 'name' => 'My favorite movies',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -27,7 +27,7 @@ class CollectionSeeder extends Seeder
             [
                 'id_profile' => 1,
                 'id_movies' => null,
-                'id_episode' => 1,
+                'id_episodes' => 1,
                 'name' => 'My favorite TV shows',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -35,7 +35,7 @@ class CollectionSeeder extends Seeder
             [
                 'id_profile' => 2,
                 'id_movies' => 2,
-                'id_episode' => null,
+                'id_episodes' => null,
                 'name' => 'Action movies',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -43,7 +43,7 @@ class CollectionSeeder extends Seeder
             [
                 'id_profile' => 2,
                 'id_movies' => 3,
-                'id_episode' => null,
+                'id_episodes' => null,
                 'name' => 'Romantic comedies',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -51,7 +51,7 @@ class CollectionSeeder extends Seeder
             [
                 'id_profile' => 3,
                 'id_movies' => 4,
-                'id_episode' => null,
+                'id_episodes' => null,
                 'name' => 'Horror movies',
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -14,7 +14,7 @@ class Review extends Model
     protected $fillable = [
         'id_movies',
         'id_serie',
-        'id_episode',
+        'id_episodes',
         'id_profile',
         'review'
     ];

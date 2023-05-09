@@ -15,7 +15,7 @@ class EpisodeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('episode')->insert([
+        DB::table('episodes')->insert([
             [
                 'serie_id' => 1,
                 'title' => 'Episode 1',

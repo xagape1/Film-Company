@@ -71,7 +71,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         
-        $user->assignRole('author');
+        $user->assignRole('basic');
 
         event(new \Illuminate\Auth\Events\Registered($user));
 

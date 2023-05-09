@@ -30,7 +30,7 @@ class ProfileSeeders extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'id_users' => 2,
+                'id_users' => 1,
                 'name' => 'Joel',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

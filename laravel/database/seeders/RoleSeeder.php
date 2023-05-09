@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Role;
+
 class RoleSeeder extends Seeder
 {
     /**
@@ -14,25 +15,23 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('role')->insert([
-            [
-                'name' => 'Administrator',
-                'description' => 'Has full access to the system',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Regular user',
-                'description' => 'Has limited access to the system',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Subscribed user',
-                'description' => 'Can acces all content to the system',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
+        Role::create([
+            'id' => Role::BASIC,
+            'name' => 'basic',
+            'guard_name' => 'web'
+        ]);
+    
+        Role::create([
+            'id' => Role::COMPANY,
+            'name' => 'company',
+            'guard_name' => 'web'
+        ]);
+    
+        Role::create([
+            'id' => Role::ADMIN,
+            'name' => 'admin',
+            'guard_name' => 'web'
         ]);
     }
+    
 }

@@ -12,7 +12,7 @@ class ReviewController extends Controller
         $review = new Review();
         $review->id_profile = $request->input('id_profile');
         $review->id_movies = $request->input('id_movies');
-        $review->id_episode = $request->input('id_episode');
+        $review->id_episodes = $request->input('id_episodes');
         $review->review = $request->input('review');
         $review->save();
 
@@ -29,7 +29,7 @@ class ReviewController extends Controller
         $review = new Review();
         $review->id_profile = $request->input('id_profile');
         $review->id_movies = $request->input('id_movies');
-        $review->id_episode = $request->input('id_episode');
+        $review->id_episodes = $request->input('id_episodes');
         $review->review = $request->input('review');
         $review->save();
 
