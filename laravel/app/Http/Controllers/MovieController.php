@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use App\Models\File;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class MovieController extends Controller
 {
@@ -32,39 +34,47 @@ class MovieController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        // Verificamos si se subió un archivo
-        if (!$request->hasFile('file')) {
-            return response()->json([
-                'error' => 'No file provided'
-            ], 400);
-        }
+{
+    // Validar dades del formulari
+    $validatedData = $request->validate([
+        'title'       => 'required',
+        'description' => 'required',
+        'gender'      => 'required',
+        'duration'    => 'required',
+        'upload'      => 'required|mimes:gif,jpeg,jpg,png,mp4|max:2048',
+    ]);
+    
+    // Obtenir dades del formulari
+    $title       = $request->get('title');
+    $description = $request->get('description');
+    $gender      = $request->get('gender');
+    $duration    = $request->get('duration');
+    $upload      = $request->file('upload');
 
-        // Validamos que el archivo sea una imagen
-        if (!$request->file('file')->isValid() || !in_array($request->file('file')->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])) {
-            return response()->json([
-                'error' => 'Invalid file'
-            ], 400);
-        }
+    // Desar fitxer al disc i inserir dades a BD
+    $file = new File();
+    $fileOk = $file->diskSave($upload);
 
-        // Creamos un nuevo archivo y lo guardamos en el servidor
-        $file = new File;
-        $file->filename = $request->file('file')->getClientOriginalName();
-        $file->filesize = $request->file('file')->getSize();
-        $file->filepath = $request->file('file')->store('public/uploads');
-        $file->save();
-
-        // Creamos una nueva película y la guardamos en la base de datos
-        $movie = new Movie;
-        $movie->title = $request->input('title');
-        $movie->description = $request->input('description');
-        $movie->year = $request->input('year');
-        $movie->files_id = $file->id;
-        $movie->save();
-
-        return response()->json($movie);
+    if ($fileOk) {
+        // Desar dades a BD
+        Log::debug("Saving movie at DB...");
+        $movie = Movie::create([
+            'title'       => $title,
+            'description' => $description,
+            'gender'      => $gender,
+            'duration'    => $duration,
+            'files_id'    => $file->id,
+        ]);
+        Log::debug("DB storage OK");
+        // Patró PRG amb missatge d'èxit
+        return redirect()->route('movies.show', $movie)
+            ->with('success', __('Movie successfully saved'));
+    } else {
+        // Patró PRG amb missatge d'error
+        return redirect()->route("movies.create")
+            ->with('error', __('ERROR Uploading file'));
     }
-
+}
 
     /**
      * Display the specified resource.

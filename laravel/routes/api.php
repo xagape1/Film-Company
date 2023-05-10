@@ -16,7 +16,7 @@ use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Api\TokenController;
-use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +30,7 @@ use App\Http\Controllers\Api\FileController;
 */
 
 
-Route::apiResource('files', FileController::class);
+Route::apiResource('files', FileController::class,);
 Route::post('files/{file}', [FileController::class, 'update_post']);
 
 
