@@ -34,47 +34,47 @@ class MovieController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-{
-    // Validar dades del formulari
-    $validatedData = $request->validate([
-        'title'       => 'required',
-        'description' => 'required',
-        'gender'      => 'required',
-        'duration'    => 'required',
-        'upload'      => 'required|mimes:gif,jpeg,jpg,png,mp4|max:2048',
-    ]);
-    
-    // Obtenir dades del formulari
-    $title       = $request->get('title');
-    $description = $request->get('description');
-    $gender      = $request->get('gender');
-    $duration    = $request->get('duration');
-    $upload      = $request->file('upload');
-
-    // Desar fitxer al disc i inserir dades a BD
-    $file = new File();
-    $fileOk = $file->diskSave($upload);
-
-    if ($fileOk) {
-        // Desar dades a BD
-        Log::debug("Saving movie at DB...");
-        $movie = Movie::create([
-            'title'       => $title,
-            'description' => $description,
-            'gender'      => $gender,
-            'duration'    => $duration,
-            'files_id'    => $file->id,
+    {
+        // Validar dades del formulari
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'gender' => 'required',
+            'duration' => 'required',
+            'upload' => 'required|mimes:gif,jpeg,jpg,png,mp4|max:2048',
         ]);
-        Log::debug("DB storage OK");
-        // Patró PRG amb missatge d'èxit
-        return redirect()->route('movies.show', $movie)
-            ->with('success', __('Movie successfully saved'));
-    } else {
-        // Patró PRG amb missatge d'error
-        return redirect()->route("movies.create")
-            ->with('error', __('ERROR Uploading file'));
+
+        // Obtenir dades del formulari
+        $title = $request->get('title');
+        $description = $request->get('description');
+        $gender = $request->get('gender');
+        $duration = $request->get('duration');
+        $upload = $request->file('upload');
+
+        // Desar fitxer al disc i inserir dades a BD
+        $file = new File();
+        $fileOk = $file->diskSave($upload);
+
+        if ($fileOk) {
+            // Desar dades a BD
+            Log::debug("Saving movie at DB...");
+            $movie = Movie::create([
+                'title' => $title,
+                'description' => $description,
+                'gender' => $gender,
+                'duration' => $duration,
+                'files_id' => $file->id,
+            ]);
+            Log::debug("DB storage OK");
+            // Patró PRG amb missatge d'èxit
+            return redirect()->route('movies.show', $movie)
+                ->with('success', __('Movie successfully saved'));
+        } else {
+            // Patró PRG amb missatge d'error
+            return redirect()->route("movies.create")
+                ->with('error', __('ERROR Uploading file'));
+        }
     }
-}
 
     /**
      * Display the specified resource.

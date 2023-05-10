@@ -16,7 +16,7 @@ class Episode extends Model
         'season',
         'duration',
         'serie_id',
-        'file_id'
+        'files_id'
     ];
 
     public function serie()

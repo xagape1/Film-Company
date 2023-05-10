@@ -16,7 +16,7 @@ class Movie extends Model
         'description',
         'gender',
         'duration',
-        'file_id'
+        'files_id'
     ];
 
     public function file()
