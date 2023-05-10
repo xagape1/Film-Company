@@ -16,6 +16,11 @@ class Movie extends Model
         'description',
         'gender',
         'duration',
-        'video_path'
+        'file_id'
     ];
+
+    public function file()
+    {
+       return $this->belongsTo(File::class);
+    }
 }

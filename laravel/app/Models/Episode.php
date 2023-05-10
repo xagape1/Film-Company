@@ -16,11 +16,15 @@ class Episode extends Model
         'season',
         'duration',
         'serie_id',
-        'video_path',
+        'file_id'
     ];
 
     public function serie()
     {
         return $this->belongsTo(Serie::class);
+    }
+    public function file()
+    {
+       return $this->belongsTo(File::class);
     }
 }

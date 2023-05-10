@@ -23,6 +23,7 @@ class MoviesSeeder extends Seeder
                 'duration' => '2:22:00',
                 'created_at' => now(),
                 'updated_at' => now(),
+                'files_id' => 1
             ],
             [
                 'title' => 'The Godfather',
@@ -31,6 +32,7 @@ class MoviesSeeder extends Seeder
                 'duration' => '2:55:00',
                 'created_at' => now(),
                 'updated_at' => now(),
+                'files_id' => 2
             ],
             [
                 'title' => 'The Dark Knight',
@@ -39,6 +41,7 @@ class MoviesSeeder extends Seeder
                 'duration' => '2:32:00',
                 'created_at' => now(),
                 'updated_at' => now(),
+                'files_id' => 2
             ],
             [
                 'title' => 'Inception',
@@ -47,6 +50,7 @@ class MoviesSeeder extends Seeder
                 'duration' => '2:28:00',
                 'created_at' => now(),
                 'updated_at' => now(),
+                'files_id' => 1
             ],
             [
                 'title' => 'Forrest Gump',
@@ -55,6 +59,7 @@ class MoviesSeeder extends Seeder
                 'duration' => '2:22:00',
                 'created_at' => now(),
                 'updated_at' => now(),
+                'files_id' => 1
             ],
         ]);
     }

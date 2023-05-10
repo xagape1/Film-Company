@@ -3,124 +3,140 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Movie;
+use App\Models\File;
+use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $movies = Movie::all();
-        $movies = $movies->map(function ($movie) {
-            $movie['video_path'] = asset(Storage::url($movie['video_path']));
-            return $movie;
-        });
         return response()->json($movies);
-    }    
-    
-    public function create(Request $request)
-{
-    // Validar los datos de entrada
-    $validator = Validator::make($request->all(), [
-        'title' => 'required',
-        'description' => 'required',
-        'gender' => 'required',
-        'duration' => 'required|numeric',
-        'video' => 'required|mimes:mp4|max:10240' // requerir un archivo de video mp4 de máximo 10 MB
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json(['errors' => $validator->errors()], 400);
     }
 
-    // Crear la nueva película
-    $movie = new Movie;
-    $movie->title = $request->input('title');
-    $movie->description = $request->input('description');
-    $movie->gender = $request->input('gender');
-    $movie->duration = $request->input('duration');
+    public function create()
+    {
+        return view("movies.create");
+    }
 
-    // Guardar la nueva película en la base de datos
-    $movie->save();
-
-    // Guardar el archivo de video en el almacenamiento
-    $video = $request->file('video');
-    $path = $video->store('public/videos');
-    $movie->video_path = $path;
-
-    // Devolver una respuesta en formato JSON
-    return response()->json(['message' => 'Movie created successfully', 'movie' => $movie], 201);
-}
-
-    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        $movie = new Movie;
-        $movie->title = $request->title;
-        $movie->description = $request->description;
-        $movie->gender = $request->gender;
-        $movie->duration = $request->duration;
-        
-        // Añadir la ruta del archivo de video
-        if ($request->hasFile('video')) {
-            $video = $request->file('video');
-            $path = $video->store('public/videos');
-            $movie->video_path = $path;
+        // Verificamos si se subió un archivo
+        if (!$request->hasFile('file')) {
+            return response()->json([
+                'error' => 'No file provided'
+            ], 400);
         }
-        
+
+        // Validamos que el archivo sea una imagen
+        if (!$request->file('file')->isValid() || !in_array($request->file('file')->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])) {
+            return response()->json([
+                'error' => 'Invalid file'
+            ], 400);
+        }
+
+        // Creamos un nuevo archivo y lo guardamos en el servidor
+        $file = new File;
+        $file->filename = $request->file('file')->getClientOriginalName();
+        $file->filesize = $request->file('file')->getSize();
+        $file->filepath = $request->file('file')->store('public/uploads');
+        $file->save();
+
+        // Creamos una nueva película y la guardamos en la base de datos
+        $movie = new Movie;
+        $movie->title = $request->input('title');
+        $movie->description = $request->input('description');
+        $movie->year = $request->input('year');
+        $movie->files_id = $file->id;
         $movie->save();
 
-        return response()->json(['message' => 'Movie created successfully', 'movie' => $movie], 201);
-    }
-
-    public function show($id)
-    {
-        $movie = Movie::find($id);
-        if (!$movie) {
-            return response()->json(['message' => 'Movie not found'], 404);
-        }
         return response()->json($movie);
     }
 
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $movie = Movie::find($id);
+
+        if ($movie) {
+            return response()->json($movie);
+        } else {
+            return response()->json([
+                'error' => 'Movie not found'
+            ], 404);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $movie = Movie::find($id);
-        if (!$movie) {
-            return response()->json(['message' => 'Movie not found'], 404);
-        }
-        $movie->title = $request->title;
-        $movie->description = $request->description;
-        $movie->gender = $request->gender;
-        $movie->duration = $request->duration;
-        
-        // Actualizar la ruta del archivo de video si se proporciona uno nuevo
-        if ($request->hasFile('video')) {
-            $video = $request->file('video');
-            $path = $video->store('public/videos');
-            $movie->video_path = $path;
-        }
-        
-        $movie->save();
 
-        return response()->json(['message' => 'Movie updated successfully', 'movie' => $movie]);
+        if (!$movie) {
+            return response()->json([
+                'error' => 'Movie not found'
+            ], 404);
+        }
+
+        $movie->fill($request->all());
+
+        if ($movie->save()) {
+            return response()->json($movie);
+        } else {
+            return response()->json([
+                'error' => 'Error while updating movie'
+            ], 500);
+        }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         $movie = Movie::find($id);
-        if (!$movie) {
-            return response()->json(['message' => 'Movie not found'], 404);
-        }
-        
-        // Eliminar el archivo de video si existe
-        if ($movie->video_path) {
-            Storage::delete($movie->video_path);
-        }
-        
-        $movie->delete();
 
-        return response()->json(['message' => 'Movie deleted successfully']);
+        if (!$movie) {
+            return response()->json([
+                'error' => 'Movie not found'
+            ], 404);
+        }
+
+        if ($movie->delete()) {
+            return response()->json([
+                'message' => 'Movie deleted successfully'
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'Error while deleting movie'
+            ], 500);
+        }
     }
 }

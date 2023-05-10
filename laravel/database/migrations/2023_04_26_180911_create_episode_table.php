@@ -21,9 +21,9 @@ return new class extends Migration
             $table->text('description');
             $table->integer('season');
             $table->time('duration');
-            $table->string('video_path')->nullable();
-            $table->timestamps();
-
+            $table->unsignedBigInteger('files_id');
+            $table->foreign('files_id')->references('id')->on('files');
+            
             $table->foreign('serie_id')->references('id')->on('serie');
         });
     }

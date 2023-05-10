@@ -29,6 +29,10 @@ class DatabaseSeeder extends Seeder
             '--force' => true // <--- add this line
         ]);
         Artisan::call('db:seed', [
+            '--class' => 'FilesSeeder',
+            '--force' => true // <--- add this line
+        ]);
+        Artisan::call('db:seed', [
             '--class' => 'ProfileSeeders', 
             '--force' => true // <--- add this line
         ]);

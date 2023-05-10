@@ -22,8 +22,7 @@ class EpisodeSeeder extends Seeder
                 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                 'season' => 1,
                 'duration' => '00:30:00',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'files_id' => 1
             ],
             [
                 'serie_id' => 1,
@@ -31,8 +30,7 @@ class EpisodeSeeder extends Seeder
                 'description' => 'Nulla venenatis ipsum eu arcu hendrerit, vitae bibendum sem maximus.',
                 'season' => 1,
                 'duration' => '00:45:00',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'files_id' => 2
             ],
             [
                 'serie_id' => 2,
@@ -40,8 +38,7 @@ class EpisodeSeeder extends Seeder
                 'description' => 'Praesent vel felis sit amet turpis pretium pellentesque vel id felis.',
                 'season' => 1,
                 'duration' => '00:20:00',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'files_id' => 1
             ],
             [
                 'serie_id' => 2,
@@ -49,8 +46,7 @@ class EpisodeSeeder extends Seeder
                 'description' => 'Praesent vel felis sit amet turpis pretium pellentesque vel id felis.',
                 'season' => 1,
                 'duration' => '00:30:00',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'files_id' => 2
             ]
         ]);
     }
