@@ -19,15 +19,11 @@ class File extends Model
         'filesize',
     ];
 
-    public function post()
+    public function movie()
     {
-        return $this->hasOne(Post::class);
+        return $this->hasOne(Movie::class);
     }
     
-    public function place()
-    {
-        return $this->hasOne(Place::class);
-    }
 
     /**
      * Store uploaded file at disk and DB
