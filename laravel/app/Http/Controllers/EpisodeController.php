@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Episode;
 use App\Models\File;
+use App\Models\Serie;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
@@ -22,7 +23,7 @@ class EpisodeController extends Controller
     }
     public function create()
     {
-        return view("movies.create");
+        return view("episodes.create");
     }
 
     public function store(Request $request)
@@ -89,26 +90,52 @@ class EpisodeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Episode $episode)
     {
-        $episode = Episode::find($id);
 
-        if (!$episode) {
-            return response()->json([
-                'error' => 'Episode not found'
-            ], 404);
-        }
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'season' => 'required',
+            'duration' => 'required',
+            'upload' => 'required|file|max:2048',
+            'id_serie' => 'required|exists:serie,id'
+        ]);
 
-        $episode->fill($request->all());
+        $title = $request->get('title');
+        $description = $request->get('description');
+        $season = $request->get('season');
+        $duration = $request->get('duration');
+        $upload = $request->file('upload');
+        $id_serie = $request->get('id_serie');
 
-        if ($episode->save()) {
-            return response()->json($episode);
+        if ($upload->isValid()) {
+            // Guardar el archivo en disco y actualizar la BD
+            $file = new File;
+            $serie = Serie::find($id_serie);
+            $file->diskSave($upload);
+
+            // Actualizar dades a BD
+            Log::debug("Updating DB...");
+            $episode->title = $title;
+            $episode->description = $description;
+            $episode->season = $season;
+            $episode->duration = $duration;
+            $episode->files_id = $file->id;
+            $episode->id_serie = $serie->id;
+            $episode->save();
+            Log::debug("DB storage OK");
+
+            // Patró PRG amb missatge d'èxit
+            return redirect()->route('episodes.show', $episode)
+                ->with('success', __('Post successfully saved'));
         } else {
-            return response()->json([
-                'error' => 'Error while updating episode'
-            ], 500);
+            // Patró PRG amb missatge d'error
+            return redirect()->route("espisodes.edit")
+                ->with('error', __('ERROR Uploading file'));
         }
     }
+
     public function destroy($id)
     {
         $episode = Episode::find($id);
