@@ -78,12 +78,14 @@ Route::get('/profile/{profile}', [ProfileController::class, 'show'])->name('prof
 Route::put('/profile/{profile}', [ProfileController::class, 'update'])->name('profile.update');
 Route::delete('/profile/{profile}', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+Route::apiResource("movies", MovieController::class);
+/*
 Route::get('/movies', [MovieController::class, 'index']);
 Route::post('/movies', [MovieController::class, 'store']);
 Route::get('/movies/{id}', [MovieController::class, 'show']);
 Route::put('/movies/{id}', [MovieController::class, 'update']);
 Route::delete('/movies/{id}', [MovieController::class, 'destroy']);
-
+*/
 Route::post('/messages', [MessageController::class, 'store']);
 Route::get('/messages', [MessageController::class, 'index']);
 Route::delete('/messages/{id}', [MessageController::class, 'destroy']);
@@ -100,12 +102,14 @@ Route::post('/friends', [FriendController::class, 'store']);
 Route::put('/friends/{id}', [FriendController::class, 'update']);
 Route::delete('/friends/{id}', [FriendController::class, 'destroy']);
 
+Route::apiResource("episodes", EpisodeController::class);
+/*
 Route::get('/episodes', [EpisodeController::class, 'index']);
 Route::post('/episodes', [EpisodeController::class, 'store']);
 Route::get('/episodes/{id}', [EpisodeController::class, 'show']);
 Route::put('/episodes/{id}', [EpisodeController::class, 'update']);
 Route::delete('/episodes/{id}', [EpisodeController::class, 'destroy']);
-
+*/
 Route::get('/collections', [CollectionController::class, 'index']);
 Route::post('/collections', [CollectionController::class, 'store']);
 Route::get('/collections/{collection}', [CollectionController::class, 'show']);

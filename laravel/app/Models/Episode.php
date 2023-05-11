@@ -15,7 +15,7 @@ class Episode extends Model
         'description',
         'season',
         'duration',
-        'serie_id',
+        'id_serie',
         'files_id'
     ];
 

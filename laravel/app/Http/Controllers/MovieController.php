@@ -41,7 +41,7 @@ class MovieController extends Controller
             'description' => 'required',
             'gender' => 'required',
             'duration' => 'required',
-            'upload' => 'required|mimes:gif,jpeg,jpg,png,mp4|max:2048',
+            'upload' => 'required|file|max:2048|mimes:mp4',
         ]);
 
         // Obtenir dades del formulari
@@ -102,26 +102,48 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $movie = Movie::find($id);
+    public function update(Request $request, Movie $movie)
+{
+    $validatedData = $request->validate([
+        'title' => 'required',
+        'description' => 'required',
+        'gender' => 'required',
+        'duration' => 'required',
+        'upload' => 'required|file|max:2048',
+    ]);
 
-        if (!$movie) {
-            return response()->json([
-                'error' => 'Movie not found'
-            ], 404);
-        }
+    // Obtenir dades del formulari
+    $title = $request->get('title');
+    $description = $request->get('description');
+    $gender = $request->get('gender');
+    $duration = $request->get('duration');
+    $upload = $request->file('upload');
 
-        $movie->fill($request->all());
+    if ($upload->isValid()) {
+        // Guardar el archivo en disco y actualizar la BD
+        $file = new File;
+        $file->diskSave($upload);
 
-        if ($movie->save()) {
-            return response()->json($movie);
-        } else {
-            return response()->json([
-                'error' => 'Error while updating movie'
-            ], 500);
-        }
+        // Actualizar dades a BD
+        Log::debug("Updating DB...");
+        $movie->title = $title;
+        $movie->description = $description;
+        $movie->gender = $gender;
+        $movie->duration = $duration;
+        $movie->files_id = $file->id;
+        $movie->save();
+        Log::debug("DB storage OK");
+
+        // Patró PRG amb missatge d'èxit
+        return redirect()->route('movies.show', $movie)
+            ->with('success', __('Post successfully saved'));
+    } else {
+        // Patró PRG amb missatge d'error
+        return redirect()->route("movies.edit")
+            ->with('error', __('ERROR Uploading file'));
     }
+}
+
 
     /**
      * Remove the specified resource from storage.
