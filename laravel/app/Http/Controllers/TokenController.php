@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ class TokenController extends Controller
             'email'    => $userValidator['email'],
             'password' => Hash::make($userValidator['password']),
         ]);
-        $user->assignRole('author');
+        $user->assignRole('basic');
 
         $token = $user->createToken("authToken")->plainTextToken;
             return response()->json([

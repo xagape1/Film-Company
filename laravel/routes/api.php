@@ -38,10 +38,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
     
-Route::post('/register', [TokenController::class, 'register']);
-Route::post('/login', [TokenController::class, 'login']);
-Route::post('/logout', [TokenController::class, 'logout'])->middleware(['auth:sanctum']);
-Route::get('/user', [TokenController::class, 'user'])->middleware(['auth:sanctum']);
+Route::post('/register', 'App\Http\Controllers\TokenController@register');
+Route::post('/login', 'App\Http\Controllers\TokenController@login');
+Route::post('/logout', 'App\Http\Controllers\TokenController@logout')->middleware(['auth:sanctum']);
+Route::get('/user', 'App\Http\Controllers\TokenController@user')->middleware(['auth:sanctum']);
 
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);

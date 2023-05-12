@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use App\Models\File;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class MovieController extends Controller
