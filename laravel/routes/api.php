@@ -72,11 +72,14 @@ Route::post('/review/store', [ReviewController::class, 'store']);
 Route::delete('/review/{id}', [ReviewController::class, 'destroy']);
 Route::get('/review', [ReviewController::class, 'index']);
 
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::apiResource("profile", ProfileController::class);
+/*
+Route::get('/profile', 'App\Http\Controllers\ProfileController@index');
 Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
 Route::get('/profile/{profile}', [ProfileController::class, 'show'])->name('profile.show');
 Route::put('/profile/{profile}', [ProfileController::class, 'update'])->name('profile.update');
 Route::delete('/profile/{profile}', [ProfileController::class, 'destroy'])->name('profile.destroy');
+*/
 
 Route::apiResource("movies", MovieController::class);
 /*
