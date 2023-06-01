@@ -15,7 +15,7 @@ use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\Api\TokenController;
+use App\Http\Controllers\TokenController;
 use App\Http\Controllers\FileController;
 
 /*

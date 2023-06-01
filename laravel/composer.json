@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0.2",
+        "php": "^7.1.0",
         "backpack/crud": "^5.6",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
@@ -57,7 +57,8 @@
         }
     },
     "config": {
-        "optimize-autoloader": true,
+       	"plataform-check": false,
+	"optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
