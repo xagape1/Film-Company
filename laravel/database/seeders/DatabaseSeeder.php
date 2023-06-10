@@ -25,6 +25,14 @@ class DatabaseSeeder extends Seeder
             '--force' => true // <--- add this line
         ]);
         Artisan::call('db:seed', [
+            '--class' => 'CoverSeeder',
+            '--force' => true // <--- add this line
+        ]);
+        Artisan::call('db:seed', [
+            '--class' => 'IntroSeeder',
+            '--force' => true // <--- add this line
+        ]);
+        Artisan::call('db:seed', [
             '--class' => 'UserSeeder',
             '--force' => true // <--- add this line
         ]);
@@ -69,7 +77,8 @@ class DatabaseSeeder extends Seeder
             '--force' => true // <--- add this line
         ]);
         Artisan::call('db:seed', [
-            '--class' => 'CollectionSeeder',            '--force' => true // <--- add this line
+            '--class' => 'CollectionSeeder',
+            '--force' => true // <--- add this line
         ]);
         Artisan::call('db:seed', [
             '--class' => 'ReviewSeeder',

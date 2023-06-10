@@ -2,17 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class SerieSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('serie')->insert([
@@ -22,6 +16,8 @@ class SerieSeeder extends Seeder
                 'gender' => 'Fantasy',
                 'seasons' => 8,
                 'episodes' => 73,
+                'cover_id' => 1, // ID del primer registro en la tabla files
+                'intro_id' => 2, // ID del segundo registro en la tabla files
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -31,6 +27,8 @@ class SerieSeeder extends Seeder
                 'gender' => 'Crime drama',
                 'seasons' => 5,
                 'episodes' => 62,
+                'cover_id' => 3, // ID del tercer registro en la tabla files
+                'intro_id' => 4, // ID del cuarto registro en la tabla files
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -40,6 +38,8 @@ class SerieSeeder extends Seeder
                 'gender' => 'Crime drama',
                 'seasons' => 6,
                 'episodes' => 86,
+                'cover_id' => 5, // ID del quinto registro en la tabla files
+                'intro_id' => 6, // ID del sexto registro en la tabla files
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

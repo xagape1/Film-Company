@@ -18,12 +18,14 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('gender');
-            $table->time('duration');
-            $table->unsignedBigInteger('files_id');
-            $table->foreign('files_id')->references('id')->on('files');
+            $table->unsignedBigInteger('cover_id');
+            $table->unsignedBigInteger('intro_id');
+            $table->foreign('cover_id')->references('id')->on('files');
+            $table->foreign('intro_id')->references('id')->on('files');
             $table->timestamps();
         });
     }
+    
     
 
     /**

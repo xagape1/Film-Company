@@ -17,9 +17,15 @@ return new class extends Migration
             $table->id();
             $table->string('filepath', 255);
             $table->integer('filesize')->default(0);
+            $table->unsignedBigInteger('cover_id')->nullable();
+            $table->unsignedBigInteger('intro_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('cover_id')->references('id')->on('files');
+            $table->foreign('intro_id')->references('id')->on('files');
         });
-    }    
+    }
+
 
     /**
      * Reverse the migrations.

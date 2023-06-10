@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('gender');
             $table->integer('seasons');
             $table->integer('episodes');
+            $table->unsignedBigInteger('cover_id');
+            $table->foreign('cover_id')->references('id')->on('cover');
+
+            $table->unsignedBigInteger('intro_id');
+            $table->foreign('intro_id')->references('id')->on('intro');
+            
             $table->timestamps();
         });
     }
