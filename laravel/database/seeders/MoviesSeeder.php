@@ -22,7 +22,7 @@ class MoviesSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
                 'cover_id' => 1,
-                'intro_id' => 2
+                'intro_id' => 1
             ],
             [
                 'title' => 'The Godfather',
@@ -30,8 +30,8 @@ class MoviesSeeder extends Seeder
                 'gender' => 'Crime',
                 'created_at' => now(),
                 'updated_at' => now(),
-                'cover_id' => 3,
-                'intro_id' => 4
+                'cover_id' => 2,
+                'intro_id' => 2
             ],
             [
                 'title' => 'The Dark Knight',
@@ -39,27 +39,9 @@ class MoviesSeeder extends Seeder
                 'gender' => 'Action',
                 'created_at' => now(),
                 'updated_at' => now(),
-                'cover_id' => 5,
-                'intro_id' => 6
-            ],
-            [
-                'title' => 'Inception',
-                'description' => 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
-                'gender' => 'Science Fiction',
-                'created_at' => now(),
-                'updated_at' => now(),
-                'cover_id' => 7,
-                'intro_id' => 8
-            ],
-            [
-                'title' => 'Forrest Gump',
-                'description' => 'The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate, and other historical events unfold through the perspective of an Alabama man with an IQ of 75.',
-                'gender' => 'Drama',
-                'created_at' => now(),
-                'updated_at' => now(),
-                'cover_id' => 9,
-                'intro_id' => 10
-            ],
+                'cover_id' => 3,
+                'intro_id' => 3
+            ]
         ]);
     }
 }

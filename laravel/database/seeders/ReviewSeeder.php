@@ -24,13 +24,6 @@ class ReviewSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id_movies' => 5,
-                'id_profile' => 2,
-                'review' => 'I loved this series! The characters were amazing.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
                 'id_movies' => 2,
                 'id_profile' => 3,
                 'review' => 'Disappointing movie. Would not recommend.',
@@ -43,7 +36,7 @@ class ReviewSeeder extends Seeder
                 'review' => 'This series was just okay. Not great, not terrible.',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
+            ]
         ]);
     }
 }

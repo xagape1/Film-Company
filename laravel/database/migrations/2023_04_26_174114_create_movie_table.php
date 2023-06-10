@@ -19,9 +19,11 @@ return new class extends Migration
             $table->text('description');
             $table->string('gender');
             $table->unsignedBigInteger('cover_id');
+            $table->foreign('cover_id')->references('id')->on('cover');
+
             $table->unsignedBigInteger('intro_id');
-            $table->foreign('cover_id')->references('id')->on('files');
-            $table->foreign('intro_id')->references('id')->on('files');
+            $table->foreign('intro_id')->references('id')->on('intro');
+            
             $table->timestamps();
         });
     }

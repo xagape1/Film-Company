@@ -47,14 +47,6 @@ class CollectionSeeder extends Seeder
                 'name' => 'Romantic comedies',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            [
-                'id_profile' => 3,
-                'id_movies' => 4,
-                'id_episodes' => null,
-                'name' => 'Horror movies',
-                'created_at' => now(),
-                'updated_at' => now(),
             ]
         ]);
     }
