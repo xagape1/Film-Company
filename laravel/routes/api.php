@@ -17,6 +17,9 @@ use App\Http\Controllers\FriendController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\CoverController;
+use App\Http\Controllers\IntroController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +31,23 @@ use App\Http\Controllers\FileController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+Route::get('/covers', [CoverController::class, 'index'])->name('covers.index');
+Route::get('/covers/create', [CoverController::class, 'create'])->name('covers.create');
+Route::post('/covers', [CoverController::class, 'store'])->name('covers.store');
+Route::get('/covers/{cover}', [CoverController::class, 'show'])->name('covers.show');
+Route::get('/covers/{cover}/edit', [CoverController::class, 'edit'])->name('covers.edit');
+Route::put('/covers/{cover}', [CoverController::class, 'update'])->name('covers.update');
+Route::delete('/covers/{cover}', [CoverController::class, 'destroy'])->name('covers.destroy');
+
+Route::get('/intros', [IntroController::class, 'index'])->name('intros.index');
+Route::get('/intros/create', [IntroController::class, 'create'])->name('intros.create');
+Route::post('/intros', [IntroController::class, 'store'])->name('intros.store');
+Route::get('/intros/{intro}', [IntroController::class, 'show'])->name('intros.show');
+Route::get('/intros/{intro}/edit', [IntroController::class, 'edit'])->name('intros.edit');
+Route::put('/intros/{intro}', [IntroController::class, 'update'])->name('intros.update');
+Route::delete('/intros/{intro}', [IntroController::class, 'destroy'])->name('intros.destroy');
 
 
 Route::apiResource('files', FileController::class,);
@@ -49,11 +69,13 @@ Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
-Route::get('/series', [SerieController::class, 'index']);
-Route::get('/series/{id}', [SerieController::class, 'show']);
-Route::post('/series', [SerieController::class, 'store']);
-Route::put('/series/{id}', [SerieController::class, 'update']);
-Route::delete('/series/{id}', [SerieController::class, 'destroy']);
+Route::apiResource("series", SerieController::class);
+
+// Route::get('/series', [SerieController::class, 'index']);
+// Route::get('/series/{id}', [SerieController::class, 'show']);
+// Route::post('/series', [SerieController::class, 'store']);
+// Route::put('/series/{id}', [SerieController::class, 'update']);
+// Route::delete('/series/{id}', [SerieController::class, 'destroy']);
 
 Route::get('/chats', [ChatController::class, 'index']);
 Route::get('/chats/{id}', [ChatController::class, 'show']);

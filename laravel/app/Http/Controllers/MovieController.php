@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
-use App\Models\File;
+use App\Models\Cover;
+use App\Models\Intro;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -21,6 +23,11 @@ class MovieController extends Controller
         return response()->json($movies);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         return view("movies.create");
@@ -34,46 +41,45 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar dades del formulari
         $validatedData = $request->validate([
             'title' => 'required',
             'description' => 'required',
             'gender' => 'required',
-            'duration' => 'required',
-            'upload' => 'required|file|max:2048|mimes:mp4',
+            'cover' => 'nullable|file|mimes:jpeg,png',
+            'intro' => 'nullable|file|mimes:mp4',
         ]);
 
-        // Obtenir dades del formulari
-        $title = $request->get('title');
-        $description = $request->get('description');
-        $gender = $request->get('gender');
-        $duration = $request->get('duration');
-        $upload = $request->file('upload');
+        $title = $request->input('title');
+        $description = $request->input('description');
+        $gender = $request->input('gender');
+        $cover = $request->file('cover');
+        $intro = $request->file('intro');
 
-        // Desar fitxer al disc i inserir dades a BD
-        $file = new File();
-        $fileOk = $file->diskSave($upload);
+        // Guardar la portada (cover)
+        $coverPath = $cover->store('covers', 'public');
+        $cover = Cover::create([
+            'path' => $coverPath,
+        ]);
 
-        if ($fileOk) {
-            // Desar dades a BD
-            Log::debug("Saving movie at DB...");
-            $movie = Movie::create([
-                'title' => $title,
-                'description' => $description,
-                'gender' => $gender,
-                'duration' => $duration,
-                'files_id' => $file->id,
-            ]);
-            Log::debug("DB storage OK");
-            // Patró PRG amb missatge d'èxit
-            return redirect()->route('movies.show', $movie)
-                ->with('success', __('Movie successfully saved'));
-        } else {
-            // Patró PRG amb missatge d'error
-            return redirect()->route("movies.create")
-                ->with('error', __('ERROR Uploading file'));
-        }
+        // Guardar el video de introducción (intro)
+        $introPath = $intro->store('intros', 'public');
+        $intro = Intro::create([
+            'path' => $introPath,
+        ]);
+
+        // Crear la película y asociar la portada y el intro
+        $movie = Movie::create([
+            'title' => $title,
+            'description' => $description,
+            'gender' => $gender,
+            'cover_id' => $cover->id,
+            'intro_id' => $intro->id,
+        ]);
+
+        return redirect()->route('movies.show', $movie)
+            ->with('success', __('Movie successfully saved'));
     }
+
 
     /**
      * Display the specified resource.
@@ -95,53 +101,78 @@ class MovieController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $movie = Movie::find($id);
+
+        if ($movie) {
+            return view("movies.edit", compact('movie'));
+        } else {
+            return redirect()->route("movies.index")
+                ->with('error', __('Movie not found'));
+        }
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Movie $movie)
-{
-    $validatedData = $request->validate([
-        'title' => 'required',
-        'description' => 'required',
-        'gender' => 'required',
-        'duration' => 'required',
-        'upload' => 'required|file|max:2048',
-    ]);
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'gender' => 'required',
+            'cover' => 'nullable|file|mimes:jpeg,png',
+            'intro' => 'nullable|file|mimes:mp4',
+        ]);
 
-    // Obtenir dades del formulari
-    $title = $request->get('title');
-    $description = $request->get('description');
-    $gender = $request->get('gender');
-    $duration = $request->get('duration');
-    $upload = $request->file('upload');
+        $title = $request->input('title');
+        $description = $request->input('description');
+        $gender = $request->input('gender');
+        $cover = $request->file('cover');
+        $intro = $request->file('intro');
 
-    if ($upload->isValid()) {
-        // Guardar el archivo en disco y actualizar la BD
-        $file = new File;
-        $file->diskSave($upload);
+        $movie = Movie::find($id);
 
-        // Actualizar dades a BD
-        Log::debug("Updating DB...");
-        $movie->title = $title;
-        $movie->description = $description;
-        $movie->gender = $gender;
-        $movie->duration = $duration;
-        $movie->files_id = $file->id;
-        $movie->save();
-        Log::debug("DB storage OK");
+        if ($movie) {
+            // Actualizar la portada (cover) si se proporciona un nuevo archivo
+            if ($cover) {
+                $coverPath = $cover->store('covers', 'public');
+                $cover->delete(); // Eliminar el archivo anterior, si existe
+                $movie->cover->path = $coverPath;
+                $movie->cover->save();
+            }
 
-        // Patró PRG amb missatge d'èxit
-        return redirect()->route('movies.show', $movie)
-            ->with('success', __('Post successfully saved'));
-    } else {
-        // Patró PRG amb missatge d'error
-        return redirect()->route("movies.edit")
-            ->with('error', __('ERROR Uploading file'));
+            // Actualizar el video de introducción (intro) si se proporciona un nuevo archivo
+            if ($intro) {
+                $introPath = $intro->store('intros', 'public');
+                $intro->delete(); // Eliminar el archivo anterior, si existe
+                $movie->intro->path = $introPath;
+                $movie->intro->save();
+            }
+
+            // Actualizar otros datos de la película
+            $movie->title = $title;
+            $movie->description = $description;
+            $movie->gender = $gender;
+            $movie->save();
+
+            return redirect()->route('movies.show', $movie)
+                ->with('success', __('Movie successfully updated'));
+        } else {
+            return redirect()->route("movies.index")
+                ->with('error', __('Movie not found'));
+        }
     }
-}
 
 
     /**

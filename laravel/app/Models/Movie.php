@@ -7,20 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movie extends Model
 {
-    use HasFactory;
-
-    protected $table = 'movies';
-
     protected $fillable = [
         'title',
         'description',
         'gender',
-        'duration',
-        'files_id'
+        'cover_id',
+        'intro_id',
     ];
 
-    public function file()
+    public function cover()
     {
-       return $this->belongsTo(File::class);
+        return $this->belongsTo(Cover::class);
+    }
+
+    public function intro()
+    {
+        return $this->belongsTo(Intro::class);
     }
 }

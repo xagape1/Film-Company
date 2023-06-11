@@ -8,20 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Serie extends Model
 {
     use HasFactory;
-
-    protected $table = 'serie';
-
     protected $fillable = [
         'title',
         'description',
         'gender',
         'seasons',
-        'episodes'
+        'episodes',
+        'cover_id',
+        'intro_id',
     ];
 
-    protected $casts = [
-        'seasons' => 'integer',
-        'episodes' => 'integer'
-    ];
+    public function cover()
+    {
+        return $this->belongsTo(Cover::class);
+    }
+
+    public function intro()
+    {
+        return $this->belongsTo(Intro::class);
+    }
 
 }
