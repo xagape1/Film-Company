@@ -21,17 +21,11 @@ use App\Http\Controllers\CoverController;
 use App\Http\Controllers\IntroController;
 
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
+Route::post('/register', 'App\Http\Controllers\TokenController@register');
+Route::post('/login', 'App\Http\Controllers\TokenController@login');
+Route::post('/logout', 'App\Http\Controllers\TokenController@logout')->middleware(['auth:sanctum']);
+Route::get('/user', 'App\Http\Controllers\TokenController@user')->middleware(['auth:sanctum']);
 
 Route::get('/covers', [CoverController::class, 'index'])->name('covers.index');
 Route::get('/covers/create', [CoverController::class, 'create'])->name('covers.create');
@@ -58,10 +52,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
     
-Route::post('/register', 'App\Http\Controllers\TokenController@register');
-Route::post('/login', 'App\Http\Controllers\TokenController@login');
-Route::post('/logout', 'App\Http\Controllers\TokenController@logout')->middleware(['auth:sanctum']);
-Route::get('/user', 'App\Http\Controllers\TokenController@user')->middleware(['auth:sanctum']);
 
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
@@ -76,6 +66,18 @@ Route::apiResource("series", SerieController::class);
 // Route::post('/series', [SerieController::class, 'store']);
 // Route::put('/series/{id}', [SerieController::class, 'update']);
 // Route::delete('/series/{id}', [SerieController::class, 'destroy']);
+
+
+Route::apiResource("movies", MovieController::class);
+Route::get('/movies/create', 'MovieController@create')->name('movies.create');
+
+/*
+Route::get('/movies', [MovieController::class, 'index']);
+Route::post('/movies', [MovieController::class, 'store']);
+Route::get('/movies/{id}', [MovieController::class, 'show']);
+Route::put('/movies/{id}', [MovieController::class, 'update']);
+Route::delete('/movies/{id}', [MovieController::class, 'destroy']);
+*/
 
 Route::get('/chats', [ChatController::class, 'index']);
 Route::get('/chats/{id}', [ChatController::class, 'show']);
@@ -103,14 +105,6 @@ Route::put('/profile/{profile}', [ProfileController::class, 'update'])->name('pr
 Route::delete('/profile/{profile}', [ProfileController::class, 'destroy'])->name('profile.destroy');
 */
 
-Route::apiResource("movies", MovieController::class);
-/*
-Route::get('/movies', [MovieController::class, 'index']);
-Route::post('/movies', [MovieController::class, 'store']);
-Route::get('/movies/{id}', [MovieController::class, 'show']);
-Route::put('/movies/{id}', [MovieController::class, 'update']);
-Route::delete('/movies/{id}', [MovieController::class, 'destroy']);
-*/
 Route::post('/messages', [MessageController::class, 'store']);
 Route::get('/messages', [MessageController::class, 'index']);
 Route::delete('/messages/{id}', [MessageController::class, 'destroy']);

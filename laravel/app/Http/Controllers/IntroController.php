@@ -40,7 +40,7 @@ class IntroController extends Controller
     {
         // Validar archivo
         $validatedData = $request->validate([
-            'upload' => 'required|mimes:mp4|max:2048'
+            'upload' => 'nullable|file|mimes:mp4'
         ]);
 
         // Guardar archivo en disco e insertar datos en BD
@@ -96,7 +96,7 @@ class IntroController extends Controller
     {
         // Validar archivo
         $validatedData = $request->validate([
-            'upload' => 'required|mimes:mp4|max:2048'
+            'upload' => 'nullable|file|mimes:mp4'
         ]);
 
         // Guardar archivo en disco y actualizar datos en BD

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Serie extends Model
 {
+    protected $table = 'serie';
+
     use HasFactory;
     protected $fillable = [
         'title',

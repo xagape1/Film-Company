@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Cover;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class CoverController extends Controller
@@ -40,7 +40,7 @@ class CoverController extends Controller
     {
         // Validar archivo
         $validatedData = $request->validate([
-            'upload' => 'required|mimes:jpeg,jpg,png|max:2048'
+            'upload' => 'nullable|file|mimes:jpeg,png,jpg'
         ]);
 
         // Guardar archivo en disco e insertar datos en BD
@@ -96,7 +96,7 @@ class CoverController extends Controller
     {
         // Validar archivo
         $validatedData = $request->validate([
-            'upload' => 'required|mimes:jpeg,jpg,png|max:2048'
+            'upload' => 'nullable|file|mimes:jpeg,png'
         ]);
 
         // Guardar archivo en disco y actualizar datos en BD

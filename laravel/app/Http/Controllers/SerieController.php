@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Serie;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Models\Cover;
 use App\Models\Intro;
+use Illuminate\Http\Request;
+
 
 class SerieController extends Controller
 {

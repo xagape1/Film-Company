@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use App\Models\Cover;
 use App\Models\Intro;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+
 
 class MovieController extends Controller
 {
@@ -49,37 +48,33 @@ class MovieController extends Controller
             'intro' => 'nullable|file|mimes:mp4',
         ]);
 
-        $title = $request->input('title');
-        $description = $request->input('description');
-        $gender = $request->input('gender');
-        $cover = $request->file('cover');
-        $intro = $request->file('intro');
+        $cover = new Cover();
+        $coverOk = $cover->diskSave($validatedData['cover']);
 
-        // Guardar la portada (cover)
-        $coverPath = $cover->store('covers', 'public');
-        $cover = Cover::create([
-            'path' => $coverPath,
-        ]);
+        $intro = new Intro();
+        $introOk = $intro->diskSave($validatedData['intro']);
 
-        // Guardar el video de introducción (intro)
-        $introPath = $intro->store('intros', 'public');
-        $intro = Intro::create([
-            'path' => $introPath,
-        ]);
+        if ($coverOk && $introOk) {
+            $movie = Movie::create([
+                'title' => $validatedData['title'],
+                'description' => $validatedData['description'],
+                'gender' => $validatedData['gender'],
+                'cover_id' => $cover->id,
+                'intro_id' => $intro->id,
+            ]);
 
-        // Crear la película y asociar la portada y el intro
-        $movie = Movie::create([
-            'title' => $title,
-            'description' => $description,
-            'gender' => $gender,
-            'cover_id' => $cover->id,
-            'intro_id' => $intro->id,
-        ]);
-
-        return redirect()->route('movies.show', $movie)
-            ->with('success', __('Movie successfully saved'));
+            if ($movie) {
+                return redirect()->route('movies.show', $movie)
+                    ->with('success', __('Movie successfully saved'));
+            } else {
+                return redirect()->route("movies.create")
+                    ->with('error', __('Error while saving movie'));
+            }
+        } else {
+            return redirect()->route("movies.create")
+                ->with('error', __('Error uploading cover or intro'));
+        }
     }
-
 
     /**
      * Display the specified resource.
@@ -135,35 +130,36 @@ class MovieController extends Controller
             'intro' => 'nullable|file|mimes:mp4',
         ]);
 
-        $title = $request->input('title');
-        $description = $request->input('description');
-        $gender = $request->input('gender');
-        $cover = $request->file('cover');
-        $intro = $request->file('intro');
-
         $movie = Movie::find($id);
 
         if ($movie) {
-            // Actualizar la portada (cover) si se proporciona un nuevo archivo
-            if ($cover) {
-                $coverPath = $cover->store('covers', 'public');
-                $cover->delete(); // Eliminar el archivo anterior, si existe
-                $movie->cover->path = $coverPath;
-                $movie->cover->save();
+            if (isset($validatedData['cover'])) {
+                $cover = new Cover();
+                $coverOk = $cover->diskSave($validatedData['cover']);
+
+                if ($coverOk) {
+                    $movie->cover_id = $cover->id;
+                } else {
+                    return redirect()->route("movies.edit", $movie)
+                        ->with('error', __('Error uploading cover'));
+                }
             }
 
-            // Actualizar el video de introducción (intro) si se proporciona un nuevo archivo
-            if ($intro) {
-                $introPath = $intro->store('intros', 'public');
-                $intro->delete(); // Eliminar el archivo anterior, si existe
-                $movie->intro->path = $introPath;
-                $movie->intro->save();
+            if (isset($validatedData['intro'])) {
+                $intro = new Intro();
+                $introOk = $intro->diskSave($validatedData['intro']);
+
+                if ($introOk) {
+                    $movie->intro_id = $intro->id;
+                } else {
+                    return redirect()->route("movies.edit", $movie)
+                        ->with('error', __('Error uploading intro'));
+                }
             }
 
-            // Actualizar otros datos de la película
-            $movie->title = $title;
-            $movie->description = $description;
-            $movie->gender = $gender;
+            $movie->title = $validatedData['title'];
+            $movie->description = $validatedData['description'];
+            $movie->gender = $validatedData['gender'];
             $movie->save();
 
             return redirect()->route('movies.show', $movie)
@@ -173,7 +169,6 @@ class MovieController extends Controller
                 ->with('error', __('Movie not found'));
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
