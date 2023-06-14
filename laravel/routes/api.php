@@ -20,13 +20,6 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\CoverController;
 use App\Http\Controllers\IntroController;
 
-
-
-Route::post('/register', 'App\Http\Controllers\TokenController@register');
-Route::post('/login', 'App\Http\Controllers\TokenController@login');
-Route::post('/logout', 'App\Http\Controllers\TokenController@logout')->middleware(['auth:sanctum']);
-Route::get('/user', 'App\Http\Controllers\TokenController@user')->middleware(['auth:sanctum']);
-
 Route::get('/covers', [CoverController::class, 'index'])->name('covers.index');
 Route::get('/covers/create', [CoverController::class, 'create'])->name('covers.create');
 Route::post('/covers', [CoverController::class, 'store'])->name('covers.store');
@@ -43,7 +36,6 @@ Route::get('/intros/{intro}/edit', [IntroController::class, 'edit'])->name('intr
 Route::put('/intros/{intro}', [IntroController::class, 'update'])->name('intros.update');
 Route::delete('/intros/{intro}', [IntroController::class, 'destroy'])->name('intros.destroy');
 
-
 Route::apiResource('files', FileController::class,);
 Route::post('files/{file}', [FileController::class, 'update_post']);
 
@@ -51,7 +43,11 @@ Route::post('files/{file}', [FileController::class, 'update_post']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-    
+
+Route::post('/register', 'App\Http\Controllers\TokenController@register');
+Route::post('/login', 'App\Http\Controllers\TokenController@login');
+Route::post('/logout', 'App\Http\Controllers\TokenController@logout')->middleware(['auth:sanctum']);
+Route::get('/user', 'App\Http\Controllers\TokenController@user')->middleware(['auth:sanctum']);
 
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
